@@ -88,13 +88,43 @@ class Car {
     this.tank += gallons;
   }
   drive(distance) {
-    this.odometer += distance;
-    this.tank -= distance;
-    if (this.tank === 0) {
+    const drivableMiles = this.tank * this.milesPerGallon; // leftover in tank * miles/gallons
+    if (distance <= drivableMiles) {//not enough gas to get to the goal
+      this.odometer = this.odometer + distance;//odometer increases by added distance travelled
+      this.tank = this.tank - (distance / this.milesPerGallon);//tank volume decreases as distance travelled
+    } else {
+      this.odometer = this.odometer + drivableMiles;//odometer records travelled miles
+      this.tank = 0;//tank runs out as gas runs out
       return `I ran out of fuel at ${this.odometer} miles!`;
-    };
+    }
   }
 }
+
+
+// class Car {
+//   constructor(model, milesPerGallon) {
+//     this.tank = 0;
+//     this.model = model;
+//     this.odometer = 0;
+//     this.milesPerGallon = milesPerGallon;
+//   }
+//   fill(gallons) {
+//     this.tank += gallons;
+//   }
+//   drive(distance) {
+//     let gallonsUsed = distance / this.milesPerGallon;
+//     if (this.tank - gallonsUsed <= 0) {
+//       this.odometer += distance;
+//       this.tank = this.tank - gallonsUsed;
+//     } else {
+//       this.odometer += this.tank * this.milesPerGallon;
+//       this.tank = 0;
+//       return `I ran out of fuel at ${this.odometer} miles!`
+//     }
+//   }
+// }
+
+
 
 /*
   TASK 3
@@ -137,7 +167,7 @@ class Lambdasian {
 */
 class Instructor extends Lambdasian {
   constructor(attrs) {
-    super(attrs);
+    super(attrs)
     this.specialty = attrs.specialty;
     this.favLanguage = attrs.favLanguage;
     this.catchPhrase = attrs.catchPhrase;
@@ -147,10 +177,10 @@ class Instructor extends Lambdasian {
     this.subject = subject;
     return `Today we are learning about ${this.subject}`;
   }
-  grade() {
-    this.name = name;
+  grade(student, subject) {
+    this.student = student;
     this.subject = subject;
-    return `${this.name} receives a perfect score on ${this.subject}`;
+    return `${student.name} receives a perfect score on ${this.subject}`;
   }
 }
 /*
@@ -181,12 +211,13 @@ class Student extends Lambdasian {
   }
   PRAssignment(subject) {
     // Student.name = name;
-    this.subject = subject;
-    return `${this.name} has submitted a PR for ${this.subject}`;
-  }
-  sprintChallenge() {
     // this.subject = subject;
-    return `${this.name} has begun sprint challenge on ${this.subject}`;
+    return `${this.name} has submitted a PR for ${subject}`;
+  }
+  sprintChallenge(subject) {
+    // this.student = student;
+    // this.subject = subject;
+    return `${this.name} has begun sprint challenge on ${subject}`;
   }
 }
 
@@ -209,15 +240,16 @@ class ProjectManager extends Instructor {
     super(attrs);
     this.gradClassName = attrs.gradClassName;
     this.favInstructor = attrs.favInstructor;
-    this.channel = attrs.channel;
+    // this.channel = attrs.channel;
   }
-  standUp() {
+  standUp(channel) {
+    // this.name = name;
     // this.channel = channel;
-    return `${this.name} announces to ${this.channel}, @channel standy times!`;
+    return `${this.name} announces to ${channel}, @channel standy times!`;
   }
-  debugsCode() {
-    return `${this.name} debugs ${Student.name}'s code on ${this.subject}`;
-  }
+  debugsCode(banana, subject) {
+    return `${this.name} debugs ${banana.name}'s code on ${subject}`;
+  }//banana is a student
 }
 /*
   STRETCH PROBLEM (no tests!)
